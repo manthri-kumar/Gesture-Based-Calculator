@@ -109,5 +109,3 @@ Feel free to use and modify it for academic or personal purposes.
 
 🙌 Acknowledgements
 MediaPipe Hands
-
-OpenCV Python Docs
