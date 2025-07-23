@@ -9,13 +9,16 @@ mp_draw = mp.solutions.drawing_utils
 
 # === Button Definitions ===
 buttons = {
-    '+': (50, 20, 100, 60),
-    '-': (170, 20, 100, 60),
-    '*': (290, 20, 100, 60),
-    '/': (410, 20, 100, 60),
-    '=': (530, 20, 100, 60),
-    'C': (650, 20, 100, 60)
+    '+': (20, 110, 80, 50),
+    '-': (120, 110, 80, 50),
+    '*': (220, 110, 80, 50),
+    '/': (320, 110, 80, 50),
+    '=': (420, 110, 80, 50),
+    'C': (520, 110, 80, 50),
 }
+
+
+
 
 tip_ids = [4, 8, 12, 16, 20]
 
@@ -30,14 +33,13 @@ idle_timeout_start = 0
 # === Utility Functions ===
 def draw_buttons(frame, hover=None, hover_time=0):
     for label, (x, y, w, h) in buttons.items():
-        # Smooth hover effect
         if label == hover:
             brightness = min(int((hover_time / 1.2) * 155), 155)
             color = (50, 200 + brightness // 3, 50)
         else:
             color = (80, 80, 200)
         cv2.rectangle(frame, (x, y), (x + w, y + h), color, cv2.FILLED)
-        cv2.putText(frame, label, (x + 30, y + 40), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (255, 255, 255), 3)
+        cv2.putText(frame, label, (x + 20, y + 40), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 3)
 
 def detect_fingers(hand_landmarks):
     lm = hand_landmarks.landmark
@@ -111,7 +113,7 @@ while True:
                             except:
                                 expression = "Err"
                             waiting_for = "number"
-                        elif hovered == 'C':
+                        elif hovered in ('C', 'Clear'):
                             expression = ""
                             waiting_for = "number"
                         last_input_time = current_time
@@ -138,13 +140,12 @@ while True:
                 if current_time - idle_timeout_start > 3:
                     waiting_for = "number"
                     idle_timeout_start = 0
-
     else:
         draw_buttons(frame)
 
     # === Display Output ===
-    cv2.rectangle(frame, (30, 90), (750, 150), (30, 30, 30), -1)
-    cv2.putText(frame, f"Expression: {expression}", (40, 135), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3)
+    cv2.rectangle(frame, (30, 20), (750, 80), (30, 30, 30), -1)
+    cv2.putText(frame, f"Expression: {expression}", (40, 65), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3)
     cv2.imshow("Gesture Calculator", frame)
 
     if cv2.waitKey(1) & 0xFF == 27:
